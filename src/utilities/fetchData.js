@@ -61,7 +61,7 @@ export async function fetchData() {
       current.variables(3).value(),
       !current.variables(2).value(),
     ),
-    hourly_data: hours_data,
+    hourlyData: hours_data,
   };
 
   return weather;

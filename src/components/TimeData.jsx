@@ -14,7 +14,7 @@ export function TimeData({ time }) {
         <div className="section">
           <h3 className="section-title">Time</h3>
           <p className="time">
-            {time.hour}:{time.minutes}:{time.seconds}
+            {time.hour}:{time.minute}:{time.second}
           </p>
         </div>
       </div>

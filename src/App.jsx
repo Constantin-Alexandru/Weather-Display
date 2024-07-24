@@ -19,7 +19,7 @@ function App() {
 
       if (data !== undefined) setData({ ...data, time: date });
 
-      if (date.minutes % 30 === 0 && parseInt(date.seconds, 10) === 0) {
+      if (date.minute % 30 === 0 && parseInt(date.second, 10) === 0) {
         fetchData()
           .then((res) => {
             setData(res);
@@ -57,7 +57,7 @@ function App() {
         <TimeData time={data.time} />
       </div>
       <div className="forecast">
-        <Forecast forecast={data.hourly_data} />
+        <Forecast forecast={data.hourlyData} />
       </div>
     </div>
   );
