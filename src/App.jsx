@@ -11,13 +11,17 @@ import { Forecast } from "./components/Forecast";
 import { destructureDate } from "./utilities/time_data";
 
 function App() {
-  const [data, setData] = useState();
+  const [data, setData] = useState(undefined);
+
+  function updateDate(date) {
+    setData((previousData) => ({ ...previousData, time: date }));
+  }
 
   useEffect(() => {
     let timerID = setInterval(() => {
       const date = destructureDate(new Date());
 
-      if (data !== undefined) setData({ ...data, time: date });
+      updateDate(date);
 
       if (date.minute % 30 === 0 && parseInt(date.second, 10) === 0) {
         fetchData()
@@ -34,33 +38,38 @@ function App() {
       .catch((error) => console.error(error));
 
     return () => clearInterval(timerID);
+
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  if (!data) return;
+  if (data === undefined) {
+    return;
+  } else {
+    return (
+      <div className="app">
+        <div className="featured-data">
+          {data.time.year}
+          <FeaturedData city={"Sinaia"} />
+        </div>
 
-  return (
-    <div className="app">
-      <div className="featured-data">
-        <FeaturedData city={"Sinaia"} />
+        <div className="temperature-display">
+          <WeatherIcon weatherCode={data.weatherCode} isNight={data.isNight} />
+        </div>
+        <div className="main-data">
+          <MainData
+            temperature={data.temperature}
+            apparent_temperature={data.apparentTemperature}
+          />
+        </div>
+        <div className="time-data">
+          <TimeData time={data.time} />
+        </div>
+        <div className="forecast">
+          <Forecast forecast={data.hourlyData} />
+        </div>
       </div>
-
-      <div className="temperature-display">
-        <WeatherIcon code={data.weatherCode} isNight={data.isNight} />
-      </div>
-      <div className="main-data">
-        <MainData
-          temperature={data.temperature}
-          apparent_temperature={data.apparentTemperature}
-        />
-      </div>
-      <div className="time-data">
-        <TimeData time={data.time} />
-      </div>
-      <div className="forecast">
-        <Forecast forecast={data.hourlyData} />
-      </div>
-    </div>
-  );
+    );
+  }
 }
 
 export default App;
